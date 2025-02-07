@@ -18,8 +18,10 @@ const io = new Server(httpServer, {
 app.use(cors());
 app.use(express.json());
 
-// Servir les fichiers statiques du client Vue.js
+// Définir le chemin du dossier de build Vue.js
 const vueDistPath = path.join(__dirname, "../client/dist");
+
+// Servir les fichiers statiques avec des headers corrects
 app.use(express.static(vueDistPath, {
   setHeaders: (res, filePath) => {
     if (filePath.endsWith(".js")) {
@@ -37,11 +39,9 @@ apiRouter.get("/", (req, res) => {
   res.json({ message: "Bienvenue sur l'API !" });
 });
 
-// Ne pas intercepter les fichiers statiques avec la wildcard
-app.get("*", (req, res) => {
-  if (!req.path.startsWith("/assets/")) {
-    res.sendFile(path.join(vueDistPath, "index.html"));
-  }
+// Servir Vue.js pour toutes les routes sauf celles commençant par /api
+app.get(/^\/(?!api).*/, (req, res) => {
+  res.sendFile(path.join(vueDistPath, "index.html"));
 });
 
 // Initialisation des sockets
