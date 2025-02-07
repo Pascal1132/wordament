@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "nodemon --ext ts --exec ts-node src/server.ts",
     "build": "tsc && cd client && npm run build && cd .. && npm run copy ",
-    "copy": "copyfiles ./src/fr.txt ./client/dist/** ./dist/",
+    "copy": "copyfiles -a ./src/fr.txt ./client/dist/**/* ./dist/",
     "start": "node dist/src/server.js",
     "test": "jest"
   },
