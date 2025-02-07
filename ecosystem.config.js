@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'wordament-server',
-      script: './dist/server.js',
+      script: './dist/src/server.js',
       instances: 1,
       autorestart: true,
       watch: false,
