@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 let socket: Socket | null = null
 const isConnected = ref(false)
-const socketUrl = 'http://localhost:3155'
+const socketUrl = '/'
 
 export function useSocket() {
   if (!socket) {
