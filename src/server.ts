@@ -21,14 +21,27 @@ app.use(express.json());
 // Définir le chemin du dossier de build Vue.js
 const vueDistPath = path.join(__dirname, "../client/dist");
 
-// Servir les fichiers statiques avec des headers corrects
+// Vérifier que les fichiers statiques sont bien servis
 app.use(express.static(vueDistPath, {
   setHeaders: (res, filePath) => {
+    console.log(`Serving: ${filePath}`);
     if (filePath.endsWith(".js")) {
       res.setHeader("Content-Type", "application/javascript");
     }
   }
 }));
+
+// Vérifier si le fichier JS est bien trouvé avant redirection
+app.get("/assets/*", (req, res, next) => {
+  const filePath = path.join(vueDistPath, req.path);
+  console.log(`Checking static file: ${filePath}`);
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.error(`File not found: ${filePath}`);
+      res.status(404).end();
+    }
+  });
+});
 
 // Préfixer toutes les routes API avec "/api"
 const apiRouter = express.Router();

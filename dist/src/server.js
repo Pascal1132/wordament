@@ -21,14 +21,26 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 // Définir le chemin du dossier de build Vue.js
 const vueDistPath = path_1.default.join(__dirname, "../client/dist");
-// Servir les fichiers statiques avec des headers corrects
+// Vérifier que les fichiers statiques sont bien servis
 app.use(express_1.default.static(vueDistPath, {
     setHeaders: (res, filePath) => {
+        console.log(`Serving: ${filePath}`);
         if (filePath.endsWith(".js")) {
             res.setHeader("Content-Type", "application/javascript");
         }
     }
 }));
+// Vérifier si le fichier JS est bien trouvé avant redirection
+app.get("/assets/*", (req, res, next) => {
+    const filePath = path_1.default.join(vueDistPath, req.path);
+    console.log(`Checking static file: ${filePath}`);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            console.error(`File not found: ${filePath}`);
+            res.status(404).end();
+        }
+    });
+});
 // Préfixer toutes les routes API avec "/api"
 const apiRouter = express_1.default.Router();
 app.use("/api", apiRouter);
