@@ -163,3 +163,18 @@ input:focus {
 .slide-up {
   animation: slideUp 0.5s ease-out;
 }
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+  button {
+    padding: 0.5rem 1rem;
+  }
+  input {
+    padding: 0.5rem 0.75rem;
+  }
+  .card {
+    padding: 1rem;
+  }
+}

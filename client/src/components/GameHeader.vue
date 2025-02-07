@@ -34,7 +34,7 @@ const getStatusIcon = computed(() => {
       </button>
       <h3 class="game-title" @click="copyToClipboard(currentGame.id)" :title="'Copier l\'ID de la partie : ' + currentGame.id">
         <font-awesome-icon icon="gamepad" class="title-icon" />
-        Partie #<span class="game-id">{{ currentGame.id }}</span>
+        #<span class="game-id">{{ currentGame.id }}</span>
         <div v-if="clipboardToast" class="toast" :class="clipboardToast.type">
           {{ clipboardToast.message }}
         </div>
@@ -112,7 +112,7 @@ const getStatusIcon = computed(() => {
 .game-title {
   color: var(--primary-color);
   font-family: var(--font-game);
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   margin: 0;
   display: flex;
   align-items: center;
@@ -184,5 +184,32 @@ const getStatusIcon = computed(() => {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+@media (max-width: 480px) {
+  .game-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .game-header .header-left {
+    width: 100%;
+  }
+
+  .game-title {
+    font-size: .8rem;
+  }
+  .status-badge {
+    font-size: 0.8rem;
+  }
+  .timer {
+    font-size: 0.9rem;
+  }
+  .back-button {
+    font-size: 1rem;
+  }
+  .copy-button {
+    font-size: 0.9rem;
+  }
 }
 </style>

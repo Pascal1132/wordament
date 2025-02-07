@@ -14,3 +14,13 @@ a,
   transition: 0.4s;
   padding: 3px;
 }
+
+@media (max-width: 480px) {
+  #app {
+    padding: 1rem;
+  }
+  a,
+  .green {
+    padding: 2px;
+  }
+}

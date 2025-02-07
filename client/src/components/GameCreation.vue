@@ -80,7 +80,7 @@ const handleJoinGame = async () => {
 
 .options-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 2rem;
 }
 
@@ -253,21 +253,17 @@ p {
   .game-creation-container {
     margin: 1rem;
   }
-
   .options-grid {
     gap: 1rem;
   }
-
   .option-card {
     padding: 1.5rem;
   }
-
   .option-icon {
     width: 50px;
     height: 50px;
     font-size: 1.2rem;
   }
-
   h3 {
     font-size: 1.1rem;
   }

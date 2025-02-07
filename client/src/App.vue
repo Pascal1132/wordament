@@ -172,6 +172,22 @@ onMounted(() => {
   }
 }
 
+@media (max-width: 480px) {
+  .app-header {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .game-title {
+    font-size: 1.5rem;
+  }
+  .main-content {
+    padding: 1rem 0.5rem;
+  }
+  .welcome-message {
+    font-size: 1rem;
+  }
+}
+
 .loading-container {
   display: flex;
   align-items: center;

@@ -10,7 +10,7 @@ export function generateGameId(): string {
   return Math.random().toString(36).substr(2, 6);
 }
 
-export function createGame(adminId: string, adminName: string, duration = 60, gridSize = 4): Game {
+export function createGame(adminId: string, adminName: string, duration = 45, gridSize = 4): Game {
   const gameId = generateGameId();
   const game: Game = {
     createdAt: new Date(),

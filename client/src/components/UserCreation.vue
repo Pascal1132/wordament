@@ -120,7 +120,7 @@ const { newUsername, error, createUser } = useUser()
   }
 
   .title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
 }
 </style>

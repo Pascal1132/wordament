@@ -267,20 +267,21 @@ document.head.appendChild(style);
 
 <style scoped>
 .game-container {
-  margin: 2rem 0;
+  margin: 1rem 0;
   width: 100%;
+  padding: 0.5rem;
 }
 
 .game-title {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   color: var(--primary-color);
   font-family: var(--font-game);
-  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-size: clamp(1.2rem, 4vw, 2rem);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 .title-icon {
@@ -289,7 +290,7 @@ document.head.appendChild(style);
 
 .game-layout {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
   align-items: flex-start;
 }
 
@@ -297,7 +298,7 @@ document.head.appendChild(style);
   user-select: none;
   touch-action: none;
   width: 100%;
-  padding: 2rem;
+  padding: 1rem;
   background: var(--card-background);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-lg);
@@ -327,17 +328,17 @@ document.head.appendChild(style);
   z-index: 1;
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
-  gap: 20px;
+  margin-bottom: 10px;
+  gap: 10px;
 }
 
 .cell {
   position: relative;
-  width: min(20vw, 100px);
-  height: min(20vw, 100px);
-  font-size: 2rem;
+  width: min(15vw, 60px);
+  height: min(15vw, 60px);
+  font-size: clamp(1rem, 4vw, 1.5rem);
   color: var(--text-primary);
-  border: 3px solid var(--primary-color);
+  border: 2px solid var(--primary-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -347,7 +348,7 @@ document.head.appendChild(style);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transform-origin: center;
   will-change: transform, opacity;
   backface-visibility: hidden;
@@ -374,15 +375,15 @@ document.head.appendChild(style);
 }
 
 .cell:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
 .cell.selected {
   background: var(--primary-color);
   color: white;
   transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.6);
   animation: selectedPulse 1.5s infinite;
 }
 
@@ -392,25 +393,25 @@ document.head.appendChild(style);
 
 @keyframes selectedPulse {
   0% {
-    box-shadow: 0 0 15px rgba(99, 102, 241, 0.6);
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
   }
   50% {
-    box-shadow: 0 0 25px rgba(99, 102, 241, 0.8);
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.8);
   }
   100% {
-    box-shadow: 0 0 15px rgba(99, 102, 241, 0.6);
+    box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
   }
 }
 
 @keyframes lastSelectedPulse {
   0% {
-    box-shadow: 0 0 15px rgba(236, 72, 153, 0.6);
+    box-shadow: 0 0 8px rgba(236, 72, 153, 0.6);
   }
   50% {
-    box-shadow: 0 0 25px rgba(236, 72, 153, 0.8);
+    box-shadow: 0 0 12px rgba(236, 72, 153, 0.8);
   }
   100% {
-    box-shadow: 0 0 15px rgba(236, 72, 153, 0.6);
+    box-shadow: 0 0 8px rgba(236, 72, 153, 0.6);
   }
 }
 
@@ -432,39 +433,48 @@ document.head.appendChild(style);
 }
 
 /* Responsive adjustments */
-@media (max-width: 480px) {
+@media (max-width: 360px) {
   .cell {
-    width: min(22vw, 80px);
-    height: min(22vw, 80px);
-    font-size: 1.8rem;
-    border-width: 2px;
+    width: min(12vw, 50px);
+    height: min(12vw, 50px);
+    font-size: clamp(0.8rem, 3vw, 1.2rem);
+    border-width: 1px;
+  }
+  
+  .row {
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  
+  .grid-container {
+    padding: 0.5rem;
   }
 }
 
 @media (max-height: 480px) and (orientation: landscape) {
   .grid-container {
-    padding: 1rem;
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 6px;
   }
 
   .row {
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: 6px;
+    margin-bottom: 6px;
   }
 
   .cell {
-    width: min(15vw, 70px);
-    height: min(15vw, 70px);
-    font-size: 1.5rem;
+    width: min(10vw, 45px);
+    height: min(10vw, 45px);
+    font-size: clamp(0.8rem, 2.5vw, 1.2rem);
   }
 
   .game-title {
-    margin-bottom: 1rem;
-    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
   }
 }
 
@@ -476,24 +486,26 @@ document.head.appendChild(style);
 
 .word-validating-error {
   position: fixed;
-  bottom: 2rem;
+  bottom: 1rem;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(220, 38, 38, 0.95);
   color: white;
-  padding: 1rem 2rem;
+  padding: 0.75rem 1.5rem;
   border-radius: var(--border-radius);
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
   z-index: 1000;
   text-align: center;
   backdrop-filter: blur(8px);
   animation: slideUp 0.3s ease-out forwards;
+  width: 90%;
+  max-width: 300px;
 }
 
 .word-validating-error p {
   margin: 0;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 @keyframes slideUp {
@@ -509,14 +521,12 @@ document.head.appendChild(style);
 
 @media (max-width: 480px) {
   .word-validating-error {
-    width: 90%;
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 1rem;
   }
 
   .word-validating-error p {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 }
 </style>
-
 

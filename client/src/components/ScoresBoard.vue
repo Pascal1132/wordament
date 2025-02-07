@@ -357,4 +357,59 @@ h4 {
 .show-more-btn:hover {
   background: var(--background-color);
 }
+
+@media (max-width: 480px) {
+  .podium {
+    padding: 0.5rem;
+  }
+
+
+  .podium-spots {
+    gap: 0.5rem;
+    height: 200px;
+  }
+
+  .podium-spot {
+    min-width: 80px;
+  }
+
+  .podium-spot .player-avatar {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .podium-spot .player-name {
+    font-size: 0.8rem;
+  }
+
+  .podium-spot .score-value {
+    font-size: 0.7rem;
+  }
+
+  .podium-block {
+    padding: 0.3rem;
+    min-height: 80px;
+  }
+
+  .first {
+    height: 120px;
+  }
+
+  .second {
+    height: 100px;
+  }
+
+  .third {
+    height: 80px;
+  }
+  .podium-block {
+    width: 80px;
+  }
+  .podium-block .player-name {
+    font-size: 0.5rem;
+    width: 100%;
+    min-width: 0;
+    padding: 0.1rem;
+  }
+}
 </style>
