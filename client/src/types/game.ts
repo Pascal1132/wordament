@@ -32,3 +32,9 @@ export interface Game {
   playerScores: PlayerScore[],
   words: PlayerWord[]
 }
+
+export interface WordValidatingError {
+  gameId: string
+  code: string
+  word: string
+}

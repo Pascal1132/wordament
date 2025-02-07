@@ -15,9 +15,10 @@ import {
   WordSelectedRequest,
   Grid,
   PlayerScore,
+  RevengeRequest,
   WordSelectedResponse
 } from '../types/game.types';
-import { ErrorResponse } from '../types/user.types';
+import { ErrorResponse, WordValidatingError } from '../types/user.types';
 import * as WordValidator from '../utils/WordValidator';
 
 // cleanup games every 10 min
@@ -48,6 +49,50 @@ export default function registerGameEvents(socket: Socket, io: Server) {
       words: game.words
     };
     io.to(game.id).emit("gameStatusChanged", statusResponse);
+  });
+
+  socket.on("revenge", (data: RevengeRequest) => {
+    if (!socket.data.username) {
+      const error: ErrorResponse = { message: "Crée d'abord ton user" };
+      socket.emit("error", error);
+      return;
+    }
+    const game = GameService.getGame(data.gameId);
+    if (!game) {
+      const error: ErrorResponse = { message: "Partie non trouvée" };
+      socket.emit("error", error);
+      return;
+    }
+
+    const newGame = GameService.createGame(socket.id, socket.data.username);
+
+    // Créer une copie des joueurs de l'ancienne partie (sauf le créateur qui est déjà ajouté)
+    const playersToAdd = game.players.filter(player => player.id !== socket.id);
+    playersToAdd.forEach(player => {
+      const playerSocket = io.sockets.sockets.get(player.id);
+      if (playerSocket && playerSocket.data.username) {
+        // Ajouter le joueur à la nouvelle partie avec son username actuel
+        GameService.joinGame(newGame.id, player.id, playerSocket.data.username);
+        // Faire rejoindre le socket room au joueur
+        playerSocket.join(newGame.id);
+      }
+    });
+
+    // Ajouter le créateur au socket room
+    socket.join(newGame.id);
+
+    // Envoyer la nouvelle partie à tous les joueurs
+    const createdResponse: GameCreatedResponse = { game: newGame };
+    io.to(newGame.id).emit("gameCreated", createdResponse);
+    
+    const statusResponse: GameStatusChangedResponse = {
+      gameId: newGame.id,
+      status: newGame.status,
+      grid: newGame.grid,
+      playerScores: newGame.playerScores,
+      words: newGame.words
+    };
+    io.to(newGame.id).emit("gameStatusChanged", statusResponse);
   });
 
   // Rejoindre une partie existante
@@ -179,15 +224,15 @@ export default function registerGameEvents(socket: Socket, io: Server) {
     const gridSize = game.gridSize;
 
     if (!WordValidator.validateWord(word, gridSize, game.grid as Grid)) {
-      const error: ErrorResponse = { message: "Mot invalide", code: "INVALID_WORD" };
-      socket.emit("error", error);
+      const error: WordValidatingError = { gameId: game.id, code: "INVALID_WORD", word };
+      socket.emit("wordValidatingError", error);
       return;
     }
 
     // Vérifier si le mot a déjà été joué par le joueur
     if (game.words.some(w => w.word === word && w.playerId === playerScore.playerId)) {
-      const error: ErrorResponse = { message: "Mot déjà joué", code: "INVALID_WORD" };
-      socket.emit("error", error);
+      const error: WordValidatingError = { gameId: game.id, code: "INVALID_WORD", word };
+      socket.emit("wordValidatingError", error);
       return;
     }
 

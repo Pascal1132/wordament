@@ -32,12 +32,15 @@
         </div>
       </div>
     </div>
+    <div v-if="props.error" class="word-validating-error">
+      <p>{{ props.error.word }} n'est pas un mot valide</p>
+    </div>
   </div>
 </template>
 
 
 <script setup lang="ts">
-import type { Grid } from '../types/game';
+import type { Grid, WordValidatingError } from '../types/game';
 import { ref, computed, watch } from 'vue';
 import { useGsap } from '../composables/useGsap';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -49,6 +52,7 @@ library.add(faDice);
 
 const props = defineProps<{
   grid: Grid;
+  error: WordValidatingError | false;
 }>();
 
 const emit = defineEmits<{
@@ -74,8 +78,14 @@ const isAdjacent = (row1: number, col1: number, row2: number, col2: number) => {
 
 const startSelection = (e: MouseEvent | TouchEvent) => {
   e.preventDefault();
-  const cell = (e instanceof MouseEvent ? e.target : e.touches[0].target as HTMLElement).closest('.cell');
+
+  const cell = (e instanceof MouseEvent ? e.target : e.touches[0].target as any).closest('.cell');
   if (!cell) return;
+
+  // Retour haptique si disponible
+  if (navigator.vibrate) {
+    navigator.vibrate(50);
+  }
 
   isSelecting.value = true;
   selectedCells.value.clear();
@@ -106,6 +116,10 @@ const updateSelection = (e: MouseEvent | TouchEvent) => {
     if (!selectedCells.value.has(cellKey)) {
       selectedCells.value.add(cellKey);
       lastCell.value = { row, col };
+      // Petit retour haptique lors de l'ajout d'une nouvelle lettre
+      if (navigator.vibrate) {
+        navigator.vibrate(25);
+      }
     }
   }
 };
@@ -116,6 +130,10 @@ const endSelection = () => {
   const selectedWord = getSelectedWord();
   if (selectedWord) {
     emit('onWordSelect', selectedWord);
+    // Retour haptique plus long pour la validation d'un mot
+    if (navigator.vibrate) {
+      navigator.vibrate(100);
+    }
   }
 
   isSelecting.value = false;
@@ -284,7 +302,7 @@ document.head.appendChild(style);
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-lg);
   position: relative;
-  overflow: visible;
+  overflow: hidden;
   perspective: 1000px;
   transform-style: preserve-3d;
 }
@@ -309,8 +327,8 @@ document.head.appendChild(style);
   z-index: 1;
   display: flex;
   justify-content: center;
-  margin-bottom: 1.2vh;
-  gap: 16px;
+  margin-bottom: 20px;
+  gap: 20px;
 }
 
 .cell {
@@ -426,11 +444,16 @@ document.head.appendChild(style);
 @media (max-height: 480px) and (orientation: landscape) {
   .grid-container {
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
   }
 
   .row {
-    gap: 8px;
-    margin-bottom: 8px;
+    gap: 12px;
+    margin-bottom: 12px;
   }
 
   .cell {
@@ -448,6 +471,50 @@ document.head.appendChild(style);
 @media (max-width: 768px) {
   .game-layout {
     flex-direction: column;
+  }
+}
+
+.word-validating-error {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(220, 38, 38, 0.95);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  z-index: 1000;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  animation: slideUp 0.3s ease-out forwards;
+}
+
+.word-validating-error p {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .word-validating-error {
+    width: 90%;
+    padding: 0.75rem 1rem;
+  }
+
+  .word-validating-error p {
+    font-size: 0.9rem;
   }
 }
 </style>

@@ -3,10 +3,11 @@ import { ref } from 'vue'
 
 let socket: Socket | null = null
 const isConnected = ref(false)
+const socketUrl = 'http://localhost:3155'
 
 export function useSocket() {
   if (!socket) {
-    socket = io('http://localhost:3000', {
+    socket = io(socketUrl, {
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,

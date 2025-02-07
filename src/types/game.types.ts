@@ -38,6 +38,10 @@ export interface Game {
 // Events Requests
 export interface CreateGameRequest {}
 
+export interface RevengeRequest {
+  gameId: string;
+}
+
 export interface JoinGameRequest {
   gameId: string;
 }

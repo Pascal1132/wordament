@@ -12,7 +12,7 @@ export function useClipboard() {
     try {
       await navigator.clipboard.writeText(text)
       toast.value = {
-        message: 'Copié dans le presse-papier !',
+        message: 'Copié !',
         type: 'success'
       }
       setTimeout(() => {

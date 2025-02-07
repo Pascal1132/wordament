@@ -11,7 +11,9 @@ export function useUser() {
   const { leaveGame } = useGame()
   const toast = useToast()
   const username = ref('')
+  const userId = ref('')
   const newUsername = ref('')
+  const error = ref<string | null>(null)
 
   const createUser = () => {
     if (!newUsername.value.trim()) {
@@ -25,6 +27,7 @@ export function useUser() {
     leaveGame()
     username.value = ''
     newUsername.value = ''
+    userId.value = ''
     toast.success('Déconnexion réussie !')
   }
 
@@ -32,10 +35,12 @@ export function useUser() {
   if (!listenersInitialized) {
     socket.on('userCreated', (response) => {
       username.value = response.name
+      userId.value = response.id
       toast.success('Profil créé avec succès !')
     })
 
     socket.on('error', (response) => {
+      error.value = response.message
       toast.error(response.message)
     })
 
@@ -45,7 +50,9 @@ export function useUser() {
   return {
     username,
     newUsername,
+    userId,
     createUser,
+    error,
     logout
   }
 }

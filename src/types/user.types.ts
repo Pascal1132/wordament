@@ -18,3 +18,11 @@ export interface ErrorResponse {
   message: string;
   code?: string;
 } 
+
+export interface WordValidatingError {
+  gameId: string;
+  code: string;
+  word: string;
+}
+
+
