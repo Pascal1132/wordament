@@ -22,7 +22,7 @@ const games = new Map();
 function generateGameId() {
     return Math.random().toString(36).substr(2, 6);
 }
-function createGame(adminId, adminName, duration = 60, gridSize = 4) {
+function createGame(adminId, adminName, duration = 45, gridSize = 4) {
     const gameId = generateGameId();
     const game = {
         createdAt: new Date(),

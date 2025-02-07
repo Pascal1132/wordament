@@ -440,12 +440,12 @@ document.head.appendChild(style);
     font-size: clamp(0.8rem, 3vw, 1.2rem);
     border-width: 1px;
   }
-  
+
   .row {
     gap: 6px;
     margin-bottom: 6px;
   }
-  
+
   .grid-container {
     padding: 0.5rem;
   }
